@@ -1,6 +1,6 @@
 %% tb3_basics.m  -  MATLAB로 Gazebo TurtleBot3에 ROS 2 연결하기
 % 전제 1: WSL에서 Gazebo가 떠 있다. 동봉한 스크립트로 띄운다.
-%           bash /mnt/c/.../camp-answer/start_gazebo_for_matlab.sh
+%           cd /mnt/c/<받은-경로>/aypi-turtlebot-tutorial && bash start_gazebo_for_matlab.sh
 % 전제 2: 이 MATLAB 세션이 ROS 2를 쓰기 전에 ros2_matlab_setup 을 실행했다.
 %         이 폴더에서 MATLAB을 시작했다면 startup.m 이 이미 해 두었다.
 % 섹션(%%) 단위로 Ctrl+Enter 로 하나씩 실행하세요.

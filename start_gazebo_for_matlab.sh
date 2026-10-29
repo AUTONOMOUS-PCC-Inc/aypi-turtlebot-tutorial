@@ -3,7 +3,8 @@
 #   TurtleBot3 Gazebo를 MATLAB 연동에 맞는 환경으로 띄운다.
 #
 #   WSL(Ubuntu 22.04)에서:
-#     bash /mnt/c/workspace/aypi-turtlebot-tutorial/camp-answer/start_gazebo_for_matlab.sh
+#     cd /mnt/c/<받은-경로>/aypi-turtlebot-tutorial
+#     bash start_gazebo_for_matlab.sh
 #
 #   하는 일은 두 가지뿐이다.
 #     1) 이미 떠 있는 Gazebo를 먼저 내린다
