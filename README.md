@@ -241,6 +241,10 @@ Connection to process ... was lost
 모든 코드는 실제 시뮬레이터로 동작을 확인했습니다. 확인하지 못한 부분은
 [실습 4](#4-tb3_avoid_slslx-simulink)에 따로 적어 두었습니다.
 
+1회차 실습 저장소는 [`aypi-car-tutorial`](https://github.com/AUTONOMOUS-PCC-Inc/aypi-car-tutorial),
+3회차는 [`aypi-metaverse-tutorial`](https://github.com/AUTONOMOUS-PCC-Inc/aypi-metaverse-tutorial),
+4회차는 [`aypi-agent-tutorial`](https://github.com/AUTONOMOUS-PCC-Inc/aypi-agent-tutorial) 입니다.
+
 ## 라이선스
 
 MIT &copy; AUTONOMOUS PCC, Inc.
