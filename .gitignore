@@ -1,0 +1,20 @@
+# MATLAB
+*.asv
+*.autosave
+*.m~
+slprj/
+sccprj/
+codegen/
+*.slxc
+*.mex*
+*.mat
+
+# Simulink cache / build
+*.slx.r*
+*_ert_rtw/
+*_grt_rtw/
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store

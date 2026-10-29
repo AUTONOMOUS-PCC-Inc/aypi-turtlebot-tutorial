@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- fastdds_matlab_wsl.xml   ** 자동 생성 파일 - make_fastdds_profile.m 로 만든다 **
+
+     Windows의 MATLAB이 WSL2(mirrored 모드)의 ROS 2와 토픽으로 통신하게 해 주는
+     Fast DDS 설정이다.
+
+     필요한 쪽은 MATLAB 뿐이다. WSL의 Gazebo나 노드는 평소처럼 그냥 띄우면 된다.
+     MATLAB이 공유메모리 locator를 아예 광고하지 않게 되면, 상대편도 UDP를 쓸 수밖에
+     없으므로 한쪽만 고쳐도 양방향이 뚫린다.
+       MATLAB : FASTRTPS_DEFAULT_PROFILES_FILE=C:\workspace\aypi-turtlebot-tutorial\camp-answer\fastdds_matlab_wsl.xml
+
+     WSL에서 ros2 topic echo 같은 CLI로 MATLAB이 보낸 토픽을 들여다보고 싶을 때만,
+     그 명령에 한해 같은 파일을 걸어 주면 된다. 평상시 WSL 전체에 걸어 두지는 말 것.
+     WSL 내부 통신까지 공유메모리를 못 쓰게 되어 시뮬레이션이 느려진다.
+       FASTRTPS_DEFAULT_PROFILES_FILE=/mnt/c/workspace/aypi-turtlebot-tutorial/camp-answer/fastdds_matlab_wsl.xml ros2 topic echo /cmd_vel
+
+     이 파일이 고치는 문제 두 가지:
+
+     1) 공유메모리(SHM) 전송 끄기   <- 이게 핵심이다
+        mirrored 네트워크 모드는 WSL의 eth1에 Windows 랜카드의 IP뿐 아니라 MAC 주소까지
+        그대로 미러링한다. Fast DDS는 MAC/IP로 "같은 컴퓨터인가"를 판단하기 때문에
+        MATLAB과 WSL을 한 대의 머신으로 착각하고, 둘 사이 통신에 UDP 대신 공유메모리를
+        고른다. 그런데 Windows의 공유메모리와 WSL의 /dev/shm 은 완전히 다른 공간이라
+        주고받은 것이 서로에게 영영 보이지 않는다. 탐색 패킷은 분명히 오가는데
+        토픽은 하나도 안 보이는 증상이 바로 이것이다.
+        useBuiltinTransports=false 로 기본 전송을 끄고 UDPv4만 쓰게 해서 막는다.
+
+     2) 멀티캐스트 대신 유니캐스트 고정 피어
+        mirrored 모드에서는 Windows와 WSL이 포트 공간을 공유한다. WSL의 gzserver 등이
+        도메인 30의 멀티캐스트 탐색 포트 14900을 먼저 차지해 버리므로 MATLAB은 그 포트를
+        바인드하지 못하고, 멀티캐스트 기반 탐색이 아예 성립하지 않는다. 그래서
+        127.0.0.1의 유니캐스트 탐색 포트로 직접 찔러 보게 한다. mirrored 모드에서
+        127.0.0.1은 Windows와 WSL이 공유하므로 양방향 모두 도달한다.
+
+     ROS_DOMAIN_ID: 30   (포트 14910 ~ 14940)
+     도메인을 바꾸려면 ros2_matlab_setup(새도메인) 을 부르면 이 파일이 다시 만들어진다.
+-->
+<dds xmlns="http://www.eprosima.com">
+  <profiles>
+
+    <transport_descriptors>
+      <transport_descriptor>
+        <transport_id>udpv4_only</transport_id>
+        <type>UDPv4</type>
+      </transport_descriptor>
+    </transport_descriptors>
+
+    <participant profile_name="matlab_wsl" is_default_profile="true">
+      <rtps>
+        <!-- 기본 전송(UDPv4 + 공유메모리) 대신 UDPv4만 -->
+        <userTransports>
+          <transport_id>udpv4_only</transport_id>
+        </userTransports>
+        <useBuiltinTransports>false</useBuiltinTransports>
+
+        <builtin>
+          <initialPeersList>
+            <locator><udpv4><address>127.0.0.1</address><port>14910</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14912</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14914</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14916</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14918</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14920</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14922</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14924</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14926</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14928</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14930</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14932</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14934</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14936</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14938</port></udpv4></locator>
+            <locator><udpv4><address>127.0.0.1</address><port>14940</port></udpv4></locator>
+          </initialPeersList>
+        </builtin>
+      </rtps>
+    </participant>
+
+  </profiles>
+</dds>
